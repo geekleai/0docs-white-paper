@@ -43,16 +43,18 @@
 \setlength{\topskip}{6pt}
 \setlength{\parindent}{0pt} % indent first line
 \setlength{\parskip}{6pt} % before par
-% \let\oldsection\section\renewcommand\section{\newpage\oldsection}
 \date{\small\today}
 \title{%
   Agent To Code Language \\
   \colorbox{mypink}{\small\sffamily\color{white}{White Paper}}}
-\usepackage[style=authoryear,sorting=nyt,backend=biber,
-  hyperref=true,abbreviate=true,
-  maxcitenames=1,maxbibnames=1]{biblatex}
-  \renewbibmacro{in:}{}
-  \addbibresource{books.bib}
+% \usepackage[style=authoryear,sorting=nyt,backend=biber,
+%   hyperref=true,abbreviate=true,
+%   maxcitenames=1,maxbibnames=1]{biblatex}
+
+  \usepackage{biblatex}  
+\renewbibmacro{in:}{}
+\addbibresource{books.bib}
+
 \tikzset{node distance=1.6cm, auto, every text node part/.style={align=center, font={\sffamily\small}}}
 \tikzstyle{block} = [draw=myblack, fill=white, inner sep=0.3cm, outer sep=0.1cm, thick]
 \tikzstyle{ln} = [draw, ->, very thick, arrows={-triangle 90}, every text node part/.append style={font={\sffamily\scriptsize}}]
