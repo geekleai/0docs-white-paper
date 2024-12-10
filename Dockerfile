@@ -1,20 +1,18 @@
 # Use an official TeX Live image as the base
 FROM texlive/texlive:latest
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /workspace
 
-# Copy the LaTeX project files into the container
-COPY . /workspace
-
-# Install additional tools needed for GitHub Actions scripts
+# Install additional tools and latexextra using tlmgr
 RUN apt-get update && apt-get install -y \
     git \
     curl \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    latexmk \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* 
 
-# Entrypoint for building the LaTeX document
-ENTRYPOINT ["pdflatex"]
+# Default entrypoint and command for building LaTeX documents
+ENTRYPOINT ["sh", "-c"]
 
 # Default command to compile the main LaTeX file
-CMD ["-interaction=nonstopmode", "wp.tex"]
+CMD ["latexmk", "-pdf" "wp.tex"]

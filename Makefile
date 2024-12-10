@@ -21,7 +21,7 @@ docker-build:
 .PHONY: build
 build:
 	@echo "Compiling LaTeX document..."
-	docker run --rm -v "$(DOCKER_VOLUME):/workspace" $(DOCKER_IMAGE) -interaction=nonstopmode $(TARGET).tex
+	docker run --rm -v "$(DOCKER_VOLUME):/workspace" $(DOCKER_IMAGE) latexmk -pdf $(TARGET).pdf
 
 # Clean up temporary files and artifacts
 .PHONY: clean

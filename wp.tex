@@ -1,4 +1,6 @@
-\documentclass[12pt,oneside]{article}
+% \documentclass[12pt,oneside]{article}
+\documentclass[12pt,twocolumn]{article}
+
 \usepackage[utf8]{inputenc}
 \usepackage{float}
 \usepackage[bottom]{footmisc}
@@ -11,79 +13,59 @@
 \usepackage{pgfplots}
 \usepackage{graphicx}
 \usepackage{fancyvrb}
-\usepackage[absolute]{textpos}\TPGrid{16}{16}
+
+\usepackage{geometry}
+\geometry{
+  a4paper,         % Paper size
+  total={7.5in,10in}, % Width and height of the text area
+  left=0.75in,     % Left margin
+  right=0.75in,    % Right margin
+  top=1in,         % Top margin
+  bottom=1in       % Bottom margin
+}
+
+% \usepackage[absolute]{textpos}\TPGrid{16}{16}
 \usepackage{tikz}
   \usetikzlibrary{shapes}
-  \usetikzlibrary{arrows.meta}
-  \usetikzlibrary{arrows}
-  \usetikzlibrary{shadows}
-  \usetikzlibrary{trees}
-  \usetikzlibrary{fit}
-  \usetikzlibrary{calc}
-  \usetikzlibrary{positioning}
-  \usetikzlibrary{decorations.pathmorphing}
-\usepackage{./tikz-uml}
-\usepackage{everypage}
-  \AddEverypageHook{
-    \begin{textblock}{0.5}[0,0](0,0)
-      \tikz \node[fill=mypink,minimum width=0.5\TPHorizModule,minimum height=16\TPVertModule] {};
-    \end{textblock}
-    \begin{textblock}{0.125}[0,0](0.5,0)
-      \tikz \node[fill=myblack,inner sep=0, minimum width=0.125\TPHorizModule,minimum height=16\TPVertModule] {};
-    \end{textblock}
-  }
+  \usetikzlibrary{arrows.meta,arrows,shadows,trees,fit,calc,positioning,decorations.pathmorphing}
 \usepackage{xcolor}
-  \definecolor{firebrick}{HTML}{B22222}
-  \definecolor{myred}{HTML}{CF0A2C}
   \definecolor{mypink}{HTML}{560CCE}
   \definecolor{myblack}{HTML}{232527}
-\newcommand\dd[1]{\colorbox{gray!30}{\texttt{#1}}}
 \usepackage{hyperref}
   \hypersetup{colorlinks=true,allcolors=blue!40!black}
+
 \setlength{\topskip}{6pt}
-\setlength{\parindent}{0pt} % indent first line
-\setlength{\parskip}{6pt} % before par
+\setlength{\parindent}{0pt} 
+\setlength{\parskip}{6pt}
+\setlength{\columnsep}{1cm} % Space between columns
+
 \date{\small\today}
 \title{%
-  Agent To Code Language \\
+  Code Explainability Agents \\
   \colorbox{mypink}{\small\sffamily\color{white}{White Paper}}}
-% \usepackage[style=authoryear,sorting=nyt,backend=biber,
-%   hyperref=true,abbreviate=true,
-%   maxcitenames=1,maxbibnames=1]{biblatex}
 
-  \usepackage{biblatex}  
+\usepackage[style=authoryear,sorting=nyt,backend=biber,
+  hyperref=true,abbreviate=true,
+  maxcitenames=1,maxbibnames=1]{biblatex}
+
 \renewbibmacro{in:}{}
 \addbibresource{books.bib}
 
-\tikzset{node distance=1.6cm, auto, every text node part/.style={align=center, font={\sffamily\small}}}
-\tikzstyle{block} = [draw=myblack, fill=white, inner sep=0.3cm, outer sep=0.1cm, thick]
-\tikzstyle{ln} = [draw, ->, very thick, arrows={-triangle 90}, every text node part/.append style={font={\sffamily\scriptsize}}]
-\author{Bohdan Snisar} % Add authors here
+\author{Bohdan Snisar}
+
 \begin{document}
 \raggedbottom
-
 \maketitle
+
 \begin{abstract}
-  As software systems grow in complexity, navigating large codebases has become an increasingly critical task for 
-  developers and automated tools. Traditional navigation methods often fall short in enabling efficient exploration 
-  and comprehension of code without direct human involvement. To address this challenge, we propose 
-  the Agent Code Language Interface (ACLI)—a specialized framework designed for 
-  language model (LM) agents to interact with codebases effectively. By leveraging the 
-  Language Server Protocol (LSP) and adhering to agent-friendly design principles, ACLI facilitates seamless 
-  navigation, comprehension, and documentation generation without requiring code modification.
+  \textbf{Modern software complexity challenges the shared understanding between business and technical teams. 
+  This whitepaper introduces code explainability agents—intelligent systems that translate evolving codebases 
+  into clear, context-rich narratives. By linking source code details to strategic objectives, these agents 
+  enhance communication, reduce cognitive overhead, and improve maintainability.}
+  \end{abstract}
 
-  ACLI introduces features like an interactive File Viewer for structured code navigation and robust 
-  Context Management to streamline agent interactions. These tools provide simple, efficient, and informative 
-  actions for locating and understanding code elements while maintaining concise and relevant context. This framework 
-  transforms code navigation into a structured, agent-accessible process, empowering LMs to act as intelligent assistants for 
-  developers, researchers, and organizations aiming to enhance their understanding of complex software systems.
-\end{abstract}
-
-% \onehalfspace
 
 \section{Introduction}
-
-\subsection{The Growing Complexity of Codebases}
 
 In the modern software development landscape, applications are becoming increasingly complex, driven by the demand
 for more features, scalability, and integration with various technologies. The advent of microservices, cloud computing, 
@@ -91,42 +73,82 @@ and the Internet of Things (IoT) has led to codebases that are not only large bu
 tasked with understanding and maintaining systems that may consist of millions of lines of code spread across numerous repositories 
 and services.
 
-This complexity poses significant challenges in code comprehension, maintenance, and onboarding of new team members. Developers must 
-navigate through layers of abstractions, understand legacy code, and grasp intricate dependencies between modules. The cognitive load 
-associated with these tasks can impede productivity and increase the likelihood of introducing errors during development.
+\subsection{Complexity of the SDLC and Developer Time Allocation}
 
-\subsection{Time Spent on Code Navigation vs. Writing}
+The SDLC extends beyond coding to encompass requirements analysis, design, testing, deployment, integration, and maintenance. 
+These activities, supported by numerous tools—issue trackers, review platforms, and CI systems—fragment developers’ workflows. 
+As they continually switch contexts, forming a coherent understanding of the product’s evolving state proves difficult.
 
-Contrary to the common perception that software development primarily involves writing new code, numerous studies have
-demonstrated that developers spend a substantial portion of their time navigating and understanding existing codebases.
-According to research by \citep{ko2006exploratory}, developers can spend up to 70\% of their time comprehending code
-when performing maintenance tasks. Similarly, \citep{Schroer_2024} found that answering even simple questions
-about code often requires exploring multiple files and understanding the relationships between various code components.
+Contrary to common belief, developers spend most of their time understanding existing code rather than writing new code. 
+Studies indicate that up to 70\% of this effort involves comprehension \textcite{ko2006exploratory}. Even simple queries often 
+require navigating multiple files \textcite{Schroer_2024}, and internal research at Microsoft corroborates that writing new code 
+is a minor portion of a developer’s day \textcite{meyer2021today}.
 
-At Microsoft, internal studies (\citep{meyer2021today}) have indicated that writing new code constitutes a relatively small 
-fraction of a developer’s workflow. The majority of time is devoted to reading existing code,
-debugging, and comprehending how different parts of the system interact. This allocation of time 
-highlights the importance of efficient code navigation tools and methodologies to enhance developer
-productivity and reduce time-to-market for software products.
+This emphasis on code comprehension, combined with a fragmented SDLC, increases cognitive load. High-level business 
+objectives rarely map cleanly onto technical structures, complicating communication and alignment.
+
+Improved visualization and tooling, as suggested by Storey \textcite{meyer2021today}, can alleviate these burdens. 
+Reducing the cognitive overhead of code comprehension and facilitating access to pertinent information enhances 
+developer productivity, shortens time-to-market, and better aligns technical outputs with strategic goals.
+
+\subsection{Divergent Representations: Business vs. Technical}
+
+Business teams prioritize product-market fit, deadlines, and ROI, expressing these aims through roadmaps, marketing plans,
+and user stories. 
+Developers work with technical details—code, architecture diagrams, and logs. Though both refer to the same product, their 
+conceptual languages rarely align.
+
+This disconnect complicates communication. Business teams struggle to map objectives to specific technical components,
+while developers may lose sight of overarching goals. 
+In the absence of a unifying framework, bridging these perspectives is difficult.
+
+\subsection{The Impact of AI-Generated Code}
+
+AI-assisted code generation accelerates development but often increases code churn and technical debt. Quick fixes, 
+code duplication, and weak documentation reduce maintainability and clarity. 
+GitClear \textcite{gitclear2024} projects rising churn rates, suggesting that AI-generated contributions often mimic 
+transient developers.
+
+As code evolves haphazardly, aligning it with strategic objectives becomes increasingly challenging. This complexity 
+demands solutions that render code comprehensible and transparent, 
+even as it mutates at machine speed.
+
+\section{The Need for AI Agents}
+
+An AI-driven agent dedicated to translating code-level details into accessible, business-oriented documentation can bridge 
+gap between business and tech and improve SDLC capabilities overall. Instead of static, human-authored documents that quickly
+lose relevance, such an agent continuously processes the codebase, automatically generating summaries and explanations that map 
+directly to business metrics and strategic goals. 
+
+It should extract architectural insights, highlight feature dependencies, and 
+clarify how certain components contribute to 
+user-facing objectives. 
+
+\subsection{The Role Of Agents}
+
+- By providing real-time, context-rich narratives that bridge technical and business perspectives, these AI-driven agents 
+foster a shared understanding of complex software systems. 
+
+- Rather than forcing developers to repeatedly re-contextualize 
+and interpret code, or leaving business stakeholders struggling to connect strategic goals with the technical infrastructure, 
+this mediator reduces cognitive load and streamlines communication. 
+
+- Developers can concentrate on innovation without being bogged down in manual documentation, while business teams gain clarity into the product’s technical foundations, 
+enhancing decision-making and ensuring alignment with strategic objectives. 
+
+In essence, these agents ground strategic intentions in concrete technical realities, unifying the entire organization around a common understanding of what the 
+software does and why it matters.
+
+\subsection{The Process}
+
+- ....
+
+\subsection{Agent-To-Code Comunication Protocol}
+
+- ....
 
 
-\subsection{Limitations of Current Tools}
 
-While Integrated Development Environments (IDEs) and code editors have evolved to include 
-features like syntax highlighting, code completion, and basic navigation capabilities, these 
-tools often fall short in addressing the challenges posed by large and complex codebases. Traditional
-navigation tools are designed with direct human interaction in mind, relying on graphical interfaces and manual input.
-They may not scale effectively when developers need to comprehend extensive codebases with deeply nested dependencies.
-
-Moreover, existing tools typically provide limited support for building a holistic understanding of the code structure.
-Features like “Go to Definition” or “Find References” are useful but require manual effort and do not offer insights 
-into higher-level code organization, design patterns, or the rationale behind certain implementations. This gap necessitates 
-a more advanced approach to code navigation that can assist developers in constructing mental models of the codebase efficiently.
-
-Additionally, these tools are not optimized for interaction with automated agents or language models that could aid in code
-comprehension and documentation generation. As artificial intelligence (AI) and machine learning technologies mature, there 
-is a growing opportunity to leverage intelligent agents to assist developers. However, the lack of suitable interfaces and 
-protocols limits the integration of such agents into the development workflow.
 
 \printbibliography%
 \end{document}
