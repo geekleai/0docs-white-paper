@@ -1,5 +1,11 @@
 name: Build LaTeX document
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+permissions:
+  id-token: write
+  contents: write      
 jobs:
   build_latex:
     runs-on: ubuntu-latest
