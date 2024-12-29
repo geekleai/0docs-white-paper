@@ -1,21 +1,52 @@
-MIT License
+LICENSE
 
-Copyright (c) 2024 Overvue Solutions
+Copyright (c) 2024 Geekle Corp
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+All rights reserved.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+---
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## Terms of Use
+
+This white paper, including all text, diagrams, models, and associated materials (collectively referred to as the "Work"), is protected under copyright law and is the exclusive property of Geekle AI Inc. ("The Authors"). The methods and models described in the Work are the subject of a pending patent application and are further protected under applicable intellectual property laws.
+
+---
+
+## Restrictions
+
+1. **No Reproduction**  
+   You may not reproduce, copy, or distribute this Work, in whole or in part, in any form or by any means, including but not limited to electronic, mechanical, photocopying, recording, or other methods, without prior written permission from the Authors.
+
+2. **No Commercial Use**  
+   You may not use this Work or the methods described herein for any commercial purpose, including but not limited to the creation of products, services, or marketing materials, without explicit authorization from the Authors.
+
+3. **No Implementation or Replication**  
+   You may not replicate, implement, or otherwise make use of the models or methods described in this Work without prior written authorization. Any unauthorized use may constitute an infringement of the pending patent.
+
+4. **No Modifications**  
+   You may not alter, modify, adapt, or create derivative works based on this Work without explicit authorization from the Authors.
+
+---
+
+## Pending Patent Notice
+
+The models and methods described in this white paper are the subject of a pending patent application filed by Geekle AI Inc. Any unauthorized use, replication, or commercialization of these methods may be subject to legal action under patent law.
+
+For questions regarding the pending patent or to request licensing information, contact the Authors directly.
+
+---
+
+## Permissions
+
+For permissions requests, including reproduction, redistribution, or commercial use, please contact:
+
+Geekle Corp.
+ed@geekle.ai, bohdan@geekle.ai
+
+---
+
+## Disclaimer
+
+This Work is provided "as is," without warranty of any kind, either express or implied, including but not limited to the implied warranties of merchantability, fitness for a particular purpose, or non-infringement. The Authors shall not be held liable for any claim, damages, or other liability arising from the use of this Work or the models and methods described herein.
+
+---
