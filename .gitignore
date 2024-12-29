@@ -12,3 +12,4 @@ target/
 *.blg
 wp.pdf
 *-SAVE-ERROR
+_minted

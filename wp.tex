@@ -1,5 +1,5 @@
-% \documentclass[12pt,oneside]{article}
-\documentclass[12pt,twocolumn]{article}
+\documentclass[12pt,oneside]{article}
+% \documentclass[12pt,twocolumn]{article}
 
 \usepackage[utf8]{inputenc}
 \usepackage{float}
@@ -13,15 +13,16 @@
 \usepackage{pgfplots}
 \usepackage{graphicx}
 \usepackage{fancyvrb}
+\usepackage{minted}     % For syntax highlighting
 
 \usepackage{geometry}
 \geometry{
-  a4paper,         % Paper size
+  a4paper,            % Paper size
   total={7.5in,10in}, % Width and height of the text area
-  left=0.75in,     % Left margin
-  right=0.75in,    % Right margin
-  top=1in,         % Top margin
-  bottom=1in       % Bottom margin
+  left=0.75in,        % Left margin
+  right=0.75in,       % Right margin
+  top=1in,            % Top margin
+  bottom=1in          % Bottom margin
 }
 
 % \usepackage[absolute]{textpos}\TPGrid{16}{16}
@@ -31,6 +32,12 @@
 \usepackage{xcolor}
   \definecolor{mypink}{HTML}{560CCE}
   \definecolor{myblack}{HTML}{232527}
+
+  \definecolor{add}{rgb}{0,0.6,0}   % Green for additions
+  \definecolor{remove}{rgb}{0.6,0,0} % Red for deletions
+
+  \definecolor{graybg}{rgb}{0.95,0.95,0.95}
+
 \usepackage{hyperref}
   \hypersetup{colorlinks=true,allcolors=blue!40!black}
 
@@ -57,92 +64,303 @@
 \raggedbottom
 \maketitle
 
+%---------------------------
+%         Abstract
+%---------------------------
 \begin{abstract}
-  \textbf{Modern software complexity challenges the shared understanding between business and technical teams. 
-  This whitepaper introduces code explainability agents—intelligent systems that translate evolving codebases 
-  into clear, context-rich narratives. By linking source code details to strategic objectives, these agents 
-  enhance communication, reduce cognitive overhead, and improve maintainability.}
-  \end{abstract}
+Developers face significant challenges in understanding evolving codebases, worsened by fragmented workflows and rapid development. AI-assisted code generation adds complexity, increasing code churn and technical debt. This white paper introduces automated documentation powered by Large Language Models (LLMs) to address these issues. This approach ensures accuracy, maintainability, and alignment with business goals by generating high-fidelity initial documentation and incrementally updating it with each code change. Integrated into the Software Development Life Cycle (SDLC), automated documentation reduces cognitive load, enhances collaboration, and improves developer productivity, fostering clearer, more maintainable codebases.
+\end{abstract}
 
+%---------------------------
+%    1. Introduction
+%---------------------------
 \section{Introduction}
 
-Artificial intelligence (AI) has rapidly evolved, transforming industries and redefining workflows across sectors. At the forefront of this revolution is the rise of \textbf{AI agents}—dynamic systems capable of reasoning, interacting with users, and taking actions based on input data and context. Unlike traditional AI models that function as passive tools, AI agents integrate foundational models, carefully crafted prompts, and iterative loops to analyze, decide, and act in real-time.
+The Software Development Life Cycle (SDLC) encompasses various activities— from requirements analysis and design to 
+testing, deployment, and maintenance. These tasks are supported by a multitude of tools, such as issue trackers, code 
+review platforms, and continuous integration (CI) systems, which often fragment developers’ workflows. As engineers 
+switch between different tools and tasks, they face considerable difficulty forming a cohesive understanding of the 
+product’s evolving codebase.
 
-These agents operate by observing inputs, processing them using large language models (LLMs), and taking actions—whether answering user queries, interfacing with external systems, or orchestrating more complex tasks. This adaptability enables AI agents to function as co-pilots in domains such as customer service, software engineering, data analysis, and decision support.
+Despite a widespread perception that software engineers primarily focus on writing new code, research consistently 
+shows a different reality: the bulk of a developer’s time is devoted to understanding existing code. For instance, 
+up to 70\% of a developer’s effort centers on code comprehension, a process that frequently involves navigating 
+numerous files \textcite{ko2006exploratory} and \textcite{Schroer_2024}. Internal studies at Microsoft confirm this 
+trend, revealing that new code creation constitutes only a minor portion of developers’ daily work 
+\textcite{meyer2021today}. This imbalance is further strained by the disconnect between high-level business objectives 
+and low-level technical structures, complicating alignment and communication among cross-functional teams.
 
-However, the adoption of AI agents presents significant challenges. Operationalizing these systems requires a cohesive approach to version control, tool integration, and lifecycle management. Currently, practices in managing AI agents remain fragmented, relying on disparate skills rather than standardized workflows. Addressing these gaps is critical for scaling AI agents into enterprise-grade solutions.
+Recently, AI-assisted code generation has brought both opportunities and challenges to the forefront. On one hand, 
+it promises enhanced productivity and faster development cycles; on the other, it leads to increased code churn and 
+technical debt \textcite{pandi2023}. Rapid fixes, code duplication, and sparse documentation undermine maintainability. 
+As \textcite{gitclear2024} indicates, AI-generated contributions often mirror the work habits of transient developers, 
+fueling fragmented codebases and complicating efforts to align technical progress with broader strategic goals.
 
-\section{Package Manager Analogy for AI Agents}
+Reducing the cognitive overhead of understanding these complex, evolving codebases thus emerges as a critical 
+necessity. Improved visualization tools and integrated developer tooling can mitigate some of these challenges, 
+ensuring that engineers have seamless access to relevant information \textcite{meyer2021today}. In particular, 
+automated documentation, powered by advanced AI models, can offer a transformative approach to code comprehension: 
+delivering up-to-date, robust documentation that bridges the gap between technical minutiae and strategic intent.
 
-The challenges faced by AI agents are reminiscent of the complexities addressed by package management systems like \textbf{NPM (Node Package Manager)} in software development. NPM transformed how developers build applications by offering a centralized repository for reusable components, version control for dependencies, and a community-driven ecosystem.
+\subsection{The Challenge of Manual Documentation}
 
-\subsection{Lessons from NPM for AI Agents}
-
-AI agents can benefit from adopting principles similar to those of NPM:
-
-\begin{itemize}
-    \item \textbf{Modularity and Reusability:} Just as NPM packages encapsulate specific functionality, AI agents can be constructed from modular components:
-    \begin{itemize}
-        \item \textit{Foundational models} (e.g., GPT, BERT) for reasoning.
-        \item \textit{Tools} (APIs or external systems) for specialized tasks.
-        \item \textit{Prompts} to guide the agent's behavior.
-    \end{itemize}
-    \item \textbf{Version Control and Compatibility:} In NPM, developers can lock package versions to ensure consistent builds. AI agents require similar mechanisms for:
-    \begin{itemize}
-        \item Tracking changes to foundational models.
-        \item Managing compatibility between prompts, models, and tools.
-    \end{itemize}
-    \item \textbf{Community-Driven Ecosystem:} NPM thrives on open-source contributions. Similarly, an ecosystem for AI agents could encourage sharing of prompts, tools, and configurations, fostering rapid innovation and adoption.
-\end{itemize}
-
-\subsection{Current Challenges for AI Agents}
-
-Despite the parallels with package management, AI agents face unique challenges:
+Documentation is widely regarded as the backbone of knowledge sharing in software development, yet it remains one of 
+the most time-consuming and error-prone tasks:
 
 \begin{itemize}
-    \item \textbf{Lack of Standardized Version Control:} Unlike NPM, where packages and versions are explicitly managed, AI agents rely on foundational models that often lack clear versioning or compatibility guarantees.
-    \item \textbf{Operational Complexity:} AI agents combine multiple components (models, prompts, APIs), making their lifecycle management more complex than traditional software.
-    \item \textbf{Security and Reliability:} Without robust validation, AI agents risk exposing vulnerabilities through external tools or generating unreliable outputs due to model inconsistencies.
+    \item Every hour spent manually documenting code diverts attention from feature development, bug fixing, and 
+    performance improvements.
+    \item When documentation is updated only sporadically, inaccuracies and omissions quickly proliferate—particularly 
+    in codebases experiencing rapid iteration or AI-generated changes.
+    \item When documentation is updated only sporadically, inaccuracies and omissions quickly proliferate—particularly 
+    in codebases experiencing rapid iteration or AI-generated changes.
+    \item Juggling disparate tools—such as wikis, issue trackers, and code review systems—makes it easy for documentation 
+    to lag behind or be overlooked entirely.
 \end{itemize}
 
-By addressing these challenges, the AI agent ecosystem can evolve into a structured, scalable framework similar to what NPM provides for software development.
+As the pace of development accelerates, these problems become more pronounced, especially when developers are also 
+contending with AI-generated code that may introduce inconsistent patterns or hidden complexities.
 
-\section{The Emerging Opportunity for AI Agents}
+\subsection{Why Automated Documentation?}
 
-The growing demand for AI agents presents an opportunity to create a new ecosystem that addresses their unique operational needs. By learning from the successes and limitations of platforms like NPM, developers and organizations can build a robust foundation for managing and deploying AI agents at scale.
-
-\subsection{Key Opportunities}
+Improving the \textbf{visibility} and \textbf{maintainability} of software projects hinges on reducing developers’ 
+cognitive load and ensuring that essential information is easy to access and always up to date. 
+\textbf{Automated documentation}, particularly when paired with Large Language Models (LLMs), offers a compelling 
+solution:
 
 \begin{itemize}
-    \item \textbf{Standardized Ecosystem for AI Agents:} A centralized repository for AI agent components could include:
-    \begin{itemize}
-        \item \textit{Model registries} with versioning and compatibility metadata.
-        \item \textit{Tool repositories} for integrating APIs and external systems.
-        \item \textit{Prompt libraries} that developers can reuse or customize.
-    \end{itemize}
-    \item \textbf{Integrated MLOps Practices:} To operationalize AI agents, MLOps practices must evolve beyond individual model management to encompass:
-    \begin{itemize}
-        \item Version control for all agent components.
-        \item Automated testing and validation pipelines for reasoning loops and decision-making processes.
-        \item Continuous integration/continuous deployment (CI/CD) tailored to multi-component systems.
-    \end{itemize}
-    \item \textbf{Security and Governance Frameworks:} AI agents must be equipped with robust security measures:
-    \begin{itemize}
-        \item Sandboxing for tool interactions to prevent malicious or unintended actions.
-        \item Audit logs for tracking agent decisions and external interactions.
-        \item Access control to safeguard sensitive data and APIs.
-    \end{itemize}
-    \item \textbf{Open Innovation and Community Contributions:} An open ecosystem for AI agents, similar to NPM, could accelerate the development of reusable tools and templates. Community contributions would enhance the diversity and adaptability of agent solutions across domains.
+    \item \textbf{Context-Aware Generation:} LLMs can analyze codebases, and version histories, and commit messages to produce documentation that matches both technical realities and business goals.
+    \item \textbf{Incremental Updates:} By monitoring repository changes, automated systems can generate patch-like documentation updates, eliminating the need for large-scale rewrites.
+    \item \textbf{Transparency \& Alignment:} Near real-time updates keep cross-functional teams—ranging from product managers to QA—on the same page, ensuring that shifting business objectives are reflected in the code’s evolving architecture.
+    \item \textbf{Reduced Technical Debt:} Documenting features and architectural decisions as they are introduced curbs the accumulation of stale or missing information—a significant contributor to technical debt \textcite{pandi2023}.
 \end{itemize}
+
+In the following sections, this white paper presents a structured methodology for LLM-powered automated documentation, 
+detailing how it tackles the friction points of traditional manual approaches and how it can be woven into existing 
+SDLC practices to maximize developer productivity and organizational agility.
+
+%---------------------------
+%    2. LLM-Powered Documentation: Overview
+%---------------------------
+\section{LLM-Powered Documentation: Overview}
+
+\subsection{Initial Creation vs. Incremental Updates}
+The central premise behind this solution is a two-phase approach:
+
+\begin{enumerate}
+  \item \textbf{Initial Documentation Generation}
+  \begin{itemize}
+    \item \emph{Objective}: Provide comprehensive coverage of the existing codebase.
+    \item \emph{Outputs}: Class descriptions, method annotations, architectural overviews, and usage examples.
+  \end{itemize}
+
+  \item \textbf{Incremental Updates via Revision Patches}
+  \begin{itemize}
+    \item \emph{Objective}: Reflect changes in the code without rewriting entire documents.
+    \item \emph{Outputs}: Small, focused documentation patches aligned with code diffs.
+  \end{itemize}
+\end{enumerate}
+
+\subsection{Core Benefits}
+\begin{enumerate}
+  \item \textbf{Efficiency}: Minimizes manual labor by automating documentation tasks.
+  \item \textbf{Accuracy}: Reduces the risk of human error by basing documentation on actual code diffs.
+  \item \textbf{Relevance}: Ensures that documentation always mirrors the latest state of the codebase.
+  \item \textbf{Scalability}: Handles large, complex codebases with minimal overhead.
+  \item \textbf{Traceability}: Revision patches offer a clear historical record, enhancing collaboration and audits.
+\end{enumerate}
+
+%---------------------------
+%         3. Methodology
+%---------------------------
+\section{Methodology}
+
+\subsection{Step 1: Initial Documentation Generation}
+\begin{enumerate}
+  \item \textbf{Source Code Analysis}: The LLM inspects class structures, functions, and existing comments.
+  \item \textbf{Context Gathering}: It synthesizes architectural overviews, method annotations, and usage examples.
+  \item \textbf{Output Creation}: The system writes documentation describing input parameters, return types, default values, and exception handling scenarios.
+\end{enumerate}
+
+\subsection{Step 2: Tracking Changes and Generating Revision Patches}
+\begin{enumerate}
+  \item \textbf{Version Control Integration}: Monitors commits in Git or similar systems to identify differences between previous and current code versions.
+  \item \textbf{Change Mapping}: Each code edit is linked to relevant sections in the existing documentation.
+  \item \textbf{Patch Generation}: A concise “patch” is produced, updating only the sections affected by the code change.
+\end{enumerate}
+
+\subsubsection{JavaScript Example: Adding a New Parameter}
+Below is a simplified JavaScript function before and after a new parameter (discount) is introduced. 
+Following the code snippets, you’ll see a separate text block demonstrating how business context and technical 
+details can be integrated into automatically generated documentation.
+
+\noindent\textbf{Original Code:}
+\begin{minted}[
+  frame=lines,         % Adds an outline (top and bottom lines)
+  bgcolor=graybg,      % Sets the background color
+  linenos,             % Adds line numbers
+  fontsize=\small,     % Adjusts font size
+  breaklines           % Breaks long lines if needed
+]{diff}
+function calculateTotal(price, quantity) {
+    return price * quantity;
+}
+\end{minted}
+
+\noindent\textbf{Updated Code:}
+The updated function introduces a new optional parameter, \texttt{discount}, and adjusts the total price accordingly.
+Below is the Pull Request-style diff:
+
+\begin{minted}[
+  frame=lines,
+  bgcolor=graybg,
+  linenos,
+  fontsize=\small,
+  style=trac,
+]{diff}
+- function calculateTotal(price, quantity) {
++ function calculateTotal(price, quantity, discount = 0) {
+     const total = price * quantity;
+-    return total;
++    return total - (total * discount);
+}
+\end{minted}
+
+Below is a before-and-after illustration of an automatically generated documentation block, followed by a \emph{diff} 
+snippet resembling a Pull Request view.
+
+\paragraph{Original Documentation Block (Before)}
+\begin{verbatim}
+  Function Name: calculateTotal
+  
+  Business Context:
+  This function is a key part of the Invoicing module, which processes customer orders.
+  By accurately computing final charges, it ensures proper billing and helps our Finance
+  team maintain consistent revenue tracking.
+  
+  Parameters:
+  1. price (Number)    - Represents the per-item cost.
+  2. quantity (Number) - Number of items being purchased by the customer.
+  
+  Behavior:
+  - Multiplies price by quantity to determine total.
+  - Returns the final adjusted price for billing.
+  
+  Usage Example:
+  calculateTotal(100, 2) -> returns 200
+  
+  Impact:
+  - Accurate documentation ensures Sales and Finance can rely on correct billing data.
+  - Potential risk if parameters are misconfigured or not applied properly.
+  
+  Revision Patch Overview:
+  - (None so far; initial version)
+\end{verbatim}
+
+
+\section*{Git Diff Example}
+
+Below is a sample Git diff snippet:
+
+\begin{minted}[
+    frame=lines,
+    bgcolor=graybg,
+    linenos,
+    escapeinside=||,
+    style=trac,
+    numbersep=5pt,
+    showspaces=false,
+    tabsize=4,
+    breaklines,
+    breakanywhere,
+    fontsize=\footnotesize,
+    highlightcolor=add
+]{diff}
+ Function Name: calculateTotal
+
+ Business Context:
+ This function is a key part of the Invoicing module, which processes customer orders.
+ By accurately computing final charges, it ensures proper billing and helps our Finance
+-team maintain consistent revenue tracking.
++team maintain consistent revenue tracking. The optional discount parameter is commonly
++used for promotional events, loyalty programs, or corporate partner deals.
+
+ Parameters:
+ 1. price (Number)    - Represents the per-item cost.
+ 2. quantity (Number) - Number of items being purchased by the customer.
++3. discount (Number) - An optional fraction (0–1) applied to the total purchase;
++                      default value is 0, indicating no discount.
+
+ Behavior:
+- - Multiplies price by quantity to determine total.
+- - Returns the final adjusted price for billing.
++ - Multiplies price by quantity to determine total.
++ - Applies discount as a fraction of total if provided.
++ - Returns the final adjusted price for billing.
+
+ Usage Example:
+-calculateTotal(100, 2) -> returns 200
++1. Using no discount:
++   calculateTotal(100, 2) -> returns 200
++
++2. With a 10% discount:
++   calculateTotal(100, 2, 0.10) -> returns 180
+
+ Impact:
+ - Accurate documentation ensures Sales and Finance can rely on correct billing data.
+-- Potential risk if parameters are misconfigured or not applied properly.
++- Potential risk if discount is misconfigured or not applied properly.
+
+ Revision Patch Overview:
+-- (None so far; initial version)
++- Added discount parameter to the function signature.
++- Adjusted documentation to reflect optional discount logic.
++- Updated usage examples to demonstrate discounted pricing.
+\end{minted}
+
+\subsection{Step 3: Seamless Integration}
+\begin{itemize}
+  \item \textbf{IDE Support}: Developers receive prompts for documentation patches directly in their IDE (e.g., VS Code, JetBrains).
+  \item \textbf{Pull Requests}: Updated documentation patches appear in pull requests, ensuring peer review and alignment with newly introduced code.
+  \item \textbf{CI/CD Pipelines}: Automated checks validate that the documentation is synchronized before deployments.
+\end{itemize}
+
+\subsection{Human-in-the-Loop and LLM Accuracy}
+One of the most challenging aspects of using Large Language Models for documentation is ensuring 
+the accuracy of the content they generate. While LLMs are powerful at synthesizing information, 
+they are also prone to ``hallucinations,'' where confident-sounding but incorrect information may appear 
+in the generated text. Moreover, quantifying the \emph{accuracy} of documentation relative to the actual 
+codebase is non-trivial.
+
+\paragraph{Human Review}
+To mitigate these risks, this methodology integrates a human-in-the-loop review process:
+\begin{enumerate}
+  \item \textbf{Stakeholder Input}: Developers, product managers, or architects review generated documentation patches, validating correctness and business alignment.
+  \item \textbf{Feedback Loop}: Approved changes feed back into the LLM’s context or fine-tuning dataset, improving future output.
+  \item \textbf{Error Correction}: Any discovered inaccuracies are corrected manually and included in version-controlled documentation, ensuring a clear audit trail.
+\end{enumerate}
+
+\paragraph{Balancing Automation and Oversight}
+While automation accelerates documentation upkeep, human oversight is crucial for validating business requirements 
+against technical changes, catching edge cases or ambiguous code structures and Continuously refining the quality of 
+LLM output and preventing drift.
+
+By combining version-controlled documentation with a human-in-the-loop review framework, the approach achieves both \emph{speed} and \emph{reliability}, aligning with the dynamic nature of modern software development.
+
+%---------------------------
+%         5. Conclusion
+%---------------------------
 
 \section{Conclusion}
+Automated documentation powered by Large Language Models (LLMs) offers a viable path to reducing the cognitive overhead 
+associated with modern software development. 
+By continuously generating and updating high-fidelity documentation, organizations can ensure that their codebases 
+remain transparent, maintainable, and aligned with ever-evolving business objectives. 
 
-AI agents represent a transformative shift in AI application, moving from static tools to dynamic systems capable of reasoning and acting. However, realizing their full potential requires addressing the challenges of modularity, version control, security, and operational complexity.
-
-
-
-
-
+As AI-assisted code generation continues to influence how software is written, maintaining consistent, accurate, 
+and contextually rich documentation becomes increasingly vital. The methodology and best practices outlined in 
+this white paper enable teams to transform documentation from a burden into a strategic asset—fostering collaboration, 
+accelerating onboarding, and ultimately enhancing the quality and longevity of software projects.
 
 
 \printbibliography%
