@@ -48,7 +48,7 @@
 
 \date{\small\today}
 \title{%
-  Code Explainability Agents \\
+  Optimizing Development Efficiency: The Case for AI-Powered Documentation \\
   \colorbox{mypink}{\small\sffamily\color{white}{White Paper}}}
 
 \usepackage[style=authoryear,sorting=nyt,backend=biber,
@@ -104,18 +104,14 @@ delivering up-to-date, robust documentation that bridges the gap between technic
 
 \subsection{The Challenge of Manual Documentation}
 
-Documentation is widely regarded as the backbone of knowledge sharing in software development, yet it remains one of 
-the most time-consuming and error-prone tasks:
+Documentation serves as the foundation of knowledge sharing in software development, yet it 
+presents persistent challenges in modern development environments:
 
 \begin{itemize}
-    \item Every hour spent manually documenting code diverts attention from feature development, bug fixing, and 
-    performance improvements.
-    \item When documentation is updated only sporadically, inaccuracies and omissions quickly proliferate—particularly 
-    in codebases experiencing rapid iteration or AI-generated changes.
-    \item When documentation is updated only sporadically, inaccuracies and omissions quickly proliferate—particularly 
-    in codebases experiencing rapid iteration or AI-generated changes.
-    \item Juggling disparate tools—such as wikis, issue trackers, and code review systems—makes it easy for documentation 
-    to lag behind or be overlooked entirely.
+    \item Manual documentation creation diverts significant engineering resources from core development tasks, including feature implementation, bug resolution, and performance optimization.
+    \item Sporadic documentation updates lead to accumulating inaccuracies and omissions, particularly in rapidly evolving codebases and those utilizing AI-generated code.
+    \item The proliferation of documentation tools—including wikis, issue trackers, and code review systems—creates friction that often results in outdated or incomplete documentation.
+    \item The increasing pace of development, coupled with AI-generated code contributions, amplifies documentation maintenance challenges and introduces inconsistent patterns.
 \end{itemize}
 
 As the pace of development accelerates, these problems become more pronounced, especially when developers are also 
@@ -125,6 +121,7 @@ contending with AI-generated code that may introduce inconsistent patterns or hi
 
 Improving the \textbf{visibility} and \textbf{maintainability} of software projects hinges on reducing developers’ 
 cognitive load and ensuring that essential information is easy to access and always up to date. 
+
 \textbf{Automated documentation}, particularly when paired with Large Language Models (LLMs), offers a compelling 
 solution:
 
@@ -258,10 +255,7 @@ snippet resembling a Pull Request view.
 \end{verbatim}
 
 
-\section*{Git Diff Example}
-
-Below is a sample Git diff snippet:
-
+\paragraph{Modified Documentation Block (After)}
 \begin{minted}[
     frame=lines,
     bgcolor=graybg,
@@ -346,6 +340,99 @@ against technical changes, catching edge cases or ambiguous code structures and 
 LLM output and preventing drift.
 
 By combining version-controlled documentation with a human-in-the-loop review framework, the approach achieves both \emph{speed} and \emph{reliability}, aligning with the dynamic nature of modern software development.
+
+
+
+%---------------------------
+% 4. Modular Documentation Through Slices
+%---------------------------
+
+\section{Modular Documentation Through Slices}
+
+Modern software development necessitates not only robust tooling but also adaptive documentation strategies. This section introduces the \textbf{slice-based approach to documentation}, a modular and scalable framework designed to address the challenges of maintaining relevance, accessibility, and alignment across diverse stakeholder needs. By breaking down documentation into focused, interlinked units called \textit{slices}, this approach ensures precision and clarity in conveying both business and technical information.
+
+\subsection{Slice: The Fundamental Unit of Documentation}
+
+A \textbf{slice} is a self-contained, modular piece of documentation tied to a specific aspect of the codebase, such as a feature, workflow, or infrastructure component. Each slice serves as a \textit{Lego block} that, when combined with others, forms the complete documentation structure. The slice-based design addresses several critical needs:
+\begin{itemize}
+    \item \textbf{Granularity and Clarity:} Each slice focuses on a single functionality or process, ensuring clear, concise, and actionable documentation.
+    \item \textbf{Stakeholder Accessibility:} Slices are designed to be understandable by both technical and non-technical stakeholders, bridging the gap between developers, product managers, and business teams.
+    \item \textbf{Dynamic Evolution:} Slices update automatically with code changes, ensuring that the documentation remains accurate and reflective of the current system state.
+\end{itemize}
+
+Each slice is structured to offer a balanced mix of \textbf{business requirements documentation (BRD)} 
+and \textbf{software decision record (SDR)} insights. Below is the standard structure:
+
+\begin{enumerate}
+    \item \textbf{Overview:} High-level purpose, business rationale, and technical summary.
+    \item \textbf{Requirements and Constraints:} Business rules and technical limitations.
+    \item \textbf{Workflow and Processes:} Step-by-step explanation, with business and technical perspectives.
+    \item \textbf{Business and Technical Context:} Broader strategic and architectural relevance.
+    \item \textbf{Contracts and Dependencies:} Input/output specifications, external dependencies.
+    \item \textbf{State Management:} System-wide impacts of state changes and data interactions.
+    \item \textbf{Code Mapping and Implementation:} Links to code artifacts and technical decisions.
+\end{enumerate}
+
+\subsection{Principles of Slice-Based Documentation}
+
+The slice-based approach adheres to the following principles:
+\begin{itemize}
+    \item \textbf{Focused:} Each slice documents a single functionality, ensuring precision.
+    \item \textbf{Versioned and Timestamped:} Slices evolve with the codebase, tracking changes with every commit.
+    \item \textbf{Stakeholder-Friendly:} Designed for both technical (e.g., developers) and non-technical (e.g., product managers) audiences.
+    \item \textbf{Rich Context:} Incorporates metadata and domain-specific insights.
+    \item \textbf{Human-in-the-Loop Workflow:} A structured review process ensures accuracy and builds trust.
+\end{itemize}
+
+\subsection{Benefits of Slice-Based Documentation}
+
+\begin{enumerate}
+    \item \textbf{Improved Collaboration:} By providing contextually rich, accessible documentation, slices enhance communication across teams.
+    \item \textbf{Reduced Cognitive Load:} Developers and stakeholders can focus on relevant slices, minimizing the effort required to understand the codebase.
+    \item \textbf{Scalability:} The modular nature of slices supports large, evolving codebases without overwhelming documentation systems.
+    \item \textbf{Traceability:} Each slice is tied to specific commits, workflows, and dependencies, providing a clear audit trail.
+\end{enumerate}
+
+\subsection{Integration with LLM-Powered Automation}
+
+Slices form the foundation of the proposed LLM-powered automated documentation system. By leveraging LLMs to generate, update, and refine slices, the framework achieves:
+\begin{itemize}
+    \item \textbf{Initial Slice Creation:} Comprehensive documentation of existing functionality, workflows, and infrastructure.
+    \item \textbf{Incremental Updates:} Patch-like modifications that reflect code changes.
+    \item \textbf{Enhanced Accuracy:} Context-aware LLM capabilities ensure alignment with both technical realities and business goals.
+\end{itemize}
+
+\subsection{Example: Slice for a Code Logic Component}
+
+\noindent\textbf{Component:} \texttt{calculateTotal} function in JavaScript.
+
+\begin{itemize}
+    \item \textbf{Overview:}
+        \begin{itemize}
+            \item \textbf{Purpose:} Calculates the total price for a transaction, including an optional discount.
+            \item \textbf{Business Need:} Ensures accurate billing for customer orders.
+            \item \textbf{Technical Summary:} Implements pricing logic, with discount support for promotions.
+        \end{itemize}
+    \item \textbf{Workflow and Processes:}
+        \begin{itemize}
+            \item \textbf{Business Process:} Applies pricing rules, including discount policies.
+            \item \textbf{Technical Process:} Multiplies price and quantity, adjusts for discounts.
+        \end{itemize}
+    \item \textbf{State Management:}
+        \begin{itemize}
+            \item \textbf{System Impact:} Updates financial transaction records with calculated totals.
+            \item \textbf{Data Relationships:} Links to order details and promotion tables.
+        \end{itemize}
+    \item \textbf{Code Mapping:}
+        \begin{itemize}
+            \item \textbf{Files:} \texttt{pricing.js}
+            \item \textbf{Function:} \texttt{calculateTotal(price, quantity, discount)}
+        \end{itemize}
+\end{itemize}
+
+This modular, slice-based framework elevates documentation from a static artifact to a dynamic, integral
+component of the development lifecycle, ensuring that it remains relevant, actionable, and aligned with 
+both technical and business needs.
 
 %---------------------------
 %         5. Conclusion
